@@ -1,0 +1,21 @@
+{
+  "name": "Nexus Core Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt && chmod +x prepare-script.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-toolsai.jupyter"
+      ]
+    }
+  },
+  "updateContentCommand": "sudo apt-get update && sudo apt-get install -y graphviz"
+}
+
+
