@@ -1,0 +1,88 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing artifacts
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+coverage.xml
+*.cover
+.hypothesis/
+nosetests.xml
+coverage/
+.python-version
+
+# Environment and IDE files
+.env
+.venv
+env/
+venv/
+ENV/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+docs/build/
+
+# Application specific
+logs/
+*.log
+config.yaml
+.config/
+data/
+!data/.gitkeep
+!data/plugins/.gitkeep
+!data/temp/.gitkeep
+!data/backups/.gitkeep
+
+# Node modules (if using any JavaScript)
+node_modules/
+
+# Docker
+.docker/
+
+# Keys and certificates
+*.pem
+*.key
+*.crt
+*.cert
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temp files
+.tmp/
+tmp/
+*.tmp
+
+# Environment variables
+.env
+.env.*
+!.env.example
