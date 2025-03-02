@@ -84,9 +84,9 @@ if [ ! -f "code-stripper.py" ]; then
     exit 1
 fi
 
-# Check if simpler-uml-generator.py exists
-if [ ! -f "simpler-uml-generator.py" ]; then
-    echo "Error: simpler-uml-generator.py not found in current directory"
+# Check if uml-generator.py exists
+if [ ! -f "uml-generator.py" ]; then
+    echo "Error: uml-generator.py not found in current directory"
     exit 1
 fi
 
@@ -97,13 +97,13 @@ python code-stripper.py "$PROJECT_DIR" --output "$OUTPUT_DIR/code" --extensions 
 # Generate standard UML diagram if requested
 if [ "$GENERATE_UML" = true ]; then
     echo "=== Generating standard UML class diagrams ==="
-    python simpler-uml-generator.py "$PROJECT_DIR" --output-dir "$DIAGRAMS_DIR" --format "$DIAGRAM_FORMAT" --project-name "$(basename "$PROJECT_DIR")"
+    python uml-generator.py "$PROJECT_DIR" --output-dir "$DIAGRAMS_DIR" --format "$DIAGRAM_FORMAT" --project-name "$(basename "$PROJECT_DIR")"
 fi
 
 # Generate Mermaid diagram if requested
 if [ "$GENERATE_MERMAID" = true ]; then
     echo "=== Generating Mermaid class diagrams ==="
-    python simpler-uml-generator.py "$PROJECT_DIR" --output-dir "$DIAGRAMS_DIR" --mermaid --project-name "$(basename "$PROJECT_DIR")"
+    python uml-generator.py "$PROJECT_DIR" --output-dir "$DIAGRAMS_DIR" --mermaid --project-name "$(basename "$PROJECT_DIR")"
 fi
 
 # Calculate statistics
