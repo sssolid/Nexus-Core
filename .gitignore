@@ -1,3 +1,6 @@
+/nexus_for_sharing/
+/nexus_for_sharing_tests/
+
 # Python artifacts
 __pycache__/
 *.py[cod]

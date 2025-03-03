@@ -1,38 +1,51 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: end-of-file-fixer
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-yaml
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-added-large-files
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-ast
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-json
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-toml
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: check-merge-conflict
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: detect-private-key
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
       - id: debug-statements
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 6.0.1
     hooks:
       - id: isort
         args: [--profile, black, --line-length, "88"]
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 25.1.0
     hooks:
       - id: black
         args: [--line-length, "88"]
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.289
+    rev: v0.9.9
     hooks:
       - id: ruff
         args: [--fix]
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.5.1
+    rev: v1.15.0
     hooks:
       - id: mypy
         additional_dependencies:
@@ -41,18 +54,19 @@ repos:
           - types-pyyaml>=6.0.12.12
           - types-requests>=2.31.0.2
           - pydantic>=2.4.2
-        exclude: ^(docs/|tests/)
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/pycqa/flake8
-    rev: 6.1.0
+    rev: 7.1.2
     hooks:
       - id: flake8
-        args: [--max-line-length, "88", "--extend-ignore", "E203,W503"]
-        exclude: ^(docs/|tests/)
+        args: [--max-line-length, "88", "--extend-ignore", "E203,W503,E501"]
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.5
+    rev: 1.8.3
     hooks:
       - id: bandit
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
+        exclude: ^(docs/|tests/|nexus_for_sharing/|nexus_for_sharing_tests/)

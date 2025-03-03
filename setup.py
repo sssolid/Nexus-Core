@@ -1,7 +1,8 @@
 """Setup script for pip installation."""
 
 import os
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 # Get version from __version__.py
 about = {}
@@ -19,9 +20,9 @@ setup(
     description="A modular platform for the automotive aftermarket industry",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Your Name",
-    author_email="your.email@example.com",
-    url="https://github.com/yourusername/nexus-core",
+    author="Ryan Serra",
+    author_email="ryan_serra@hotmail.com",
+    url="https://github.com/sssolid/nexus-core",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
