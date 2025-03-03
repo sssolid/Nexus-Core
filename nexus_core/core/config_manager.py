@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 from copy import deepcopy
-from typing import Any, Dict, List, Optional, Set, Union, cast, Callable
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import yaml
 from pydantic import BaseModel, Field, ValidationError, model_validator
@@ -115,8 +115,8 @@ class ConfigSchema(BaseModel):
         description="REST API settings",
     )
 
-    @model_validator(mode='after')
-    def validate_api_port(self) -> 'ConfigSchema':
+    @model_validator(mode="after")
+    def validate_api_port(self) -> "ConfigSchema":
         """Ensure `api.port` is a valid integer."""
         if not isinstance(self.api.get("port"), int):
             raise ValueError("API port must be an integer.")
@@ -212,8 +212,8 @@ class ConfigSchema(BaseModel):
         description="Application settings",
     )
 
-    @model_validator(mode='after')
-    def validate_jwt_secret(self) -> 'ConfigSchema':
+    @model_validator(mode="after")
+    def validate_jwt_secret(self) -> "ConfigSchema":
         """Validate that the JWT secret is set if API is enabled.
 
         Returns:
@@ -221,6 +221,7 @@ class ConfigSchema(BaseModel):
 
         Raises:
             ValueError: If JWT secret is not set but API is enabled.
+
         """
         api = self.api  # Now properly accessing self.api instead of values
         security = self.security
@@ -243,9 +244,9 @@ class ConfigManager(NexusManager):
     """
 
     def __init__(
-            self,
-            config_path: Optional[Union[str, pathlib.Path]] = None,
-            env_prefix: str = "NEXUS_",
+        self,
+        config_path: Optional[Union[str, pathlib.Path]] = None,
+        env_prefix: str = "NEXUS_",
     ) -> None:
         """Initialize the Configuration Manager.
 
@@ -254,6 +255,7 @@ class ConfigManager(NexusManager):
                 will look for a file at a default location or use only environment
                 variables and defaults.
             env_prefix: Prefix for environment variables to consider for configuration.
+
         """
         super().__init__(name="ConfigManager")
         self._config_path = (
@@ -273,10 +275,13 @@ class ConfigManager(NexusManager):
 
         Raises:
             ManagerInitializationError: If initialization fails.
+
         """
         try:
             # Start with default configuration
-            self._config = ConfigSchema().model_dump()  # Changed from dict() to model_dump()
+            self._config = (
+                ConfigSchema().model_dump()
+            )  # Changed from dict() to model_dump()
 
             # Load from file if available
             self._load_from_file()
@@ -309,6 +314,7 @@ class ConfigManager(NexusManager):
 
         Raises:
             ConfigurationError: If the file exists but cannot be loaded.
+
         """
         if not self._config_path.exists():
             return
@@ -329,7 +335,6 @@ class ConfigManager(NexusManager):
                     self._merge_config(file_config)
                     self._loaded_from_file = True
 
-
         except (yaml.YAMLError, json.JSONDecodeError) as e:
             raise ConfigurationError(
                 f"Error parsing config file {self._config_path}: {str(e)}",
@@ -345,16 +350,19 @@ class ConfigManager(NexusManager):
         Examples:
             NEXUS_DATABASE_HOST=localhost
             NEXUS_LOGGING_LEVEL=DEBUG
+
         """
         for env_name, env_value in os.environ.items():
             if not env_name.startswith(self._env_prefix):
                 continue
 
             # Strip the prefix and split by underscore
-            config_path = env_name[len(self._env_prefix):].lower().split("_")
+            config_path = env_name[len(self._env_prefix) :].lower().split("_")
 
             # Apply to config
-            self._set_nested_value(self._config, config_path, self._parse_env_value(env_value))
+            self._set_nested_value(
+                self._config, config_path, self._parse_env_value(env_value)
+            )
             self._env_vars_applied.add(env_name)
 
         # **Ensure re-validation after applying environment variables**
@@ -369,6 +377,7 @@ class ConfigManager(NexusManager):
 
         Returns:
             Any: The parsed value as a bool, int, float, or string.
+
         """
         # Handle boolean values
         if value.lower() in ("true", "yes", "1", "on"):
@@ -388,13 +397,16 @@ class ConfigManager(NexusManager):
             # Otherwise, return as string
             return value
 
-    def _set_nested_value(self, config: Dict[str, Any], path: List[str], value: Any) -> None:
+    def _set_nested_value(
+        self, config: Dict[str, Any], path: List[str], value: Any
+    ) -> None:
         """Set a value in a nested dictionary using a path.
 
         Args:
             config: The configuration dictionary to modify.
             path: The path to the value, e.g., ["database", "host"].
             value: The value to set.
+
         """
         if not path:
             return
@@ -417,9 +429,12 @@ class ConfigManager(NexusManager):
 
         Raises:
             ConfigurationError: If the configuration is invalid.
+
         """
         try:
-            validated_config = ConfigSchema(**self._config).model_dump()  # Changed from dict() to model_dump()
+            validated_config = ConfigSchema(
+                **self._config
+            ).model_dump()  # Changed from dict() to model_dump()
             self._config = validated_config
         except ValidationError as e:
             errors = e.errors()
@@ -441,6 +456,7 @@ class ConfigManager(NexusManager):
 
         Returns:
             Any: The configuration value, or the default if not found.
+
         """
         if not self._initialized:
             raise ConfigurationError(
@@ -452,7 +468,7 @@ class ConfigManager(NexusManager):
         if self._loaded_from_file and self._config_path.exists():
             self._check_file_updated()
 
-        parts = key.split('.')
+        parts = key.split(".")
         result = self._config
 
         try:
@@ -471,6 +487,7 @@ class ConfigManager(NexusManager):
 
         Raises:
             ConfigurationError: If the key is invalid or the value fails validation.
+
         """
         if not self._initialized:
             raise ConfigurationError(
@@ -482,12 +499,14 @@ class ConfigManager(NexusManager):
         new_config = deepcopy(self._config)
 
         # Update the value
-        parts = key.split('.')
+        parts = key.split(".")
         self._set_nested_value(new_config, parts, value)
 
         # Validate the new configuration
         try:
-            validated_config = ConfigSchema(**new_config).model_dump()  # Changed from dict() to model_dump()
+            validated_config = ConfigSchema(
+                **new_config
+            ).model_dump()  # Changed from dict() to model_dump()
 
             # If validation passes, update the config
             self._config = validated_config
@@ -527,21 +546,24 @@ class ConfigManager(NexusManager):
             # Log the error but don't raise - config is still valid in memory
             print(f"Error saving configuration to {self._config_path}: {str(e)}")
 
-    def _merge_config(self, from_config: Dict[str, Any], to_config: Optional[Dict[str, Any]] = None) -> None:
+    def _merge_config(
+        self, from_config: Dict[str, Any], to_config: Optional[Dict[str, Any]] = None
+    ) -> None:
         """Recursively merge configuration dictionaries.
 
         Args:
             from_config: The dictionary to merge from.
             to_config: The dictionary to merge into. If None, uses self._config.
+
         """
         if to_config is None:
             to_config = self._config
 
         for key, value in from_config.items():
             if (
-                    key in self._config
-                    and isinstance(self._config[key], dict)
-                    and isinstance(value, dict)
+                key in self._config
+                and isinstance(self._config[key], dict)
+                and isinstance(value, dict)
             ):
                 self._merge_config(value, self._config[key])
             else:
@@ -555,6 +577,7 @@ class ConfigManager(NexusManager):
         Args:
             key: The configuration key to watch (in dot notation).
             callback: A function to call when the value changes.
+
         """
         if key not in self._listeners:
             self._listeners[key] = []
@@ -562,12 +585,15 @@ class ConfigManager(NexusManager):
         if callback not in self._listeners[key]:
             self._listeners[key].append(callback)
 
-    def unregister_listener(self, key: str, callback: Callable[[str, Any], None]) -> None:
+    def unregister_listener(
+        self, key: str, callback: Callable[[str, Any], None]
+    ) -> None:
         """Unregister a configuration change listener.
 
         Args:
             key: The configuration key being watched.
             callback: The callback function to remove.
+
         """
         if key in self._listeners and callback in self._listeners[key]:
             self._listeners[key].remove(callback)
@@ -581,6 +607,7 @@ class ConfigManager(NexusManager):
         Args:
             key: The configuration key that changed.
             value: The new value.
+
         """
         # Find all listeners that should be notified
         for listener_key, callbacks in list(self._listeners.items()):
@@ -618,12 +645,19 @@ class ConfigManager(NexusManager):
 
         Returns:
             Dict[str, Any]: Status information about the Configuration Manager.
+
         """
         status = super().status()
-        status.update({
-            "config_file": str(self._config_path) if self._loaded_from_file else None,
-            "loaded_from_file": self._loaded_from_file,
-            "env_vars_applied": len(self._env_vars_applied),
-            "registered_listeners": sum(len(callbacks) for callbacks in self._listeners.values()),
-        })
+        status.update(
+            {
+                "config_file": (
+                    str(self._config_path) if self._loaded_from_file else None
+                ),
+                "loaded_from_file": self._loaded_from_file,
+                "env_vars_applied": len(self._env_vars_applied),
+                "registered_listeners": sum(
+                    len(callbacks) for callbacks in self._listeners.values()
+                ),
+            }
+        )
         return status
