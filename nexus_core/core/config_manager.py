@@ -205,7 +205,7 @@ class ConfigSchema(BaseModel):
         description="Application settings",
     )
     
-    model_validator(mode='after')
+    @model_validator(mode='after')
     def validate_jwt_secret(self) -> 'ConfigSchema':
         """Validate that the JWT secret is set if API is enabled.
         
