@@ -7,7 +7,7 @@ from copy import deepcopy
 from typing import Any, Dict, List, Optional, Set, Union, cast
 
 import yaml
-from pydantic import BaseModel, Field, ValidationError, root_validator
+from pydantic import BaseModel, Field, ValidationError, model_validator
 
 from nexus_core.core.base import NexusManager
 from nexus_core.utils.exceptions import ConfigurationError, ManagerInitializationError
@@ -205,8 +205,8 @@ class ConfigSchema(BaseModel):
         description="Application settings",
     )
     
-    @root_validator
-    def validate_jwt_secret(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+    model_validator(mode='after')
+    def validate_jwt_secret(self) -> 'ConfigSchema':
         """Validate that the JWT secret is set if API is enabled.
         
         Args:
