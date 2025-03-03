@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional, Type, cast
 
 from nexus_core.core.base import BaseManager, NexusManager
 from nexus_core.core.config_manager import ConfigManager
-from nexus_core.core.event_bus import EventBusManager
+from nexus_core.core.event_bus_manager import EventBusManager
 from nexus_core.core.logging_manager import LoggingManager
 from nexus_core.utils.exceptions import ManagerInitializationError, NexusError
 
