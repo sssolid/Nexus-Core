@@ -1,0 +1,34 @@
+classDiagram
+    class TestPlugin
+    TestPlugin : +name
+    TestPlugin : +version
+    TestPlugin : +description
+    TestPlugin : +author
+    TestPlugin : +dependencies
+    TestPlugin : -__init__()
+    TestPlugin : +initialize()
+    TestPlugin : +shutdown()
+    class PluginWithDeps
+    PluginWithDeps : +name
+    PluginWithDeps : +version
+    PluginWithDeps : +description
+    PluginWithDeps : +author
+    PluginWithDeps : +dependencies
+    PluginWithDeps : -__init__()
+    PluginWithDeps : +initialize()
+    PluginWithDeps : +shutdown()
+    class PluginWithMissingDep
+    PluginWithMissingDep : +name
+    PluginWithMissingDep : +version
+    PluginWithMissingDep : +description
+    PluginWithMissingDep : +author
+    PluginWithMissingDep : +dependencies
+    PluginWithMissingDep : -__init__()
+    PluginWithMissingDep : +initialize()
+    PluginWithMissingDep : +shutdown()
+    class TestModel
+    TestModel : -__tablename__
+    TestModel : +id
+    TestModel : +name
+    TestModel : +value
+    TestModel : -__repr__()
