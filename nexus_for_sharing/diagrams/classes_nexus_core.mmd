@@ -263,6 +263,15 @@ classDiagram
     UserRole : +USER
     UserRole : +VIEWER
     class User
+    User : -__tablename__
+    User : +id
+    User : +username
+    User : +email
+    User : +hashed_password
+    User : +active
+    User : +last_login
+    User : +roles
+    User : -__repr__()
     class Permission
     class AuthToken
     class SecurityManager
@@ -993,6 +1002,57 @@ classDiagram
     class APIError
     APIError : +details
     APIError : -__init__()
+    class TimestampMixin
+    TimestampMixin : +created_at
+    TimestampMixin : +updated_at
+    class Plugin
+    Plugin : -__tablename__
+    Plugin : +id
+    Plugin : +name
+    Plugin : +version
+    Plugin : +description
+    Plugin : +author
+    Plugin : +enabled
+    Plugin : +installed_path
+    Plugin : +configuration
+    Plugin : -__repr__()
+    class AuditActionType
+    AuditActionType : +CREATE
+    AuditActionType : +READ
+    AuditActionType : +UPDATE
+    AuditActionType : +DELETE
+    AuditActionType : +LOGIN
+    AuditActionType : +LOGOUT
+    AuditActionType : +EXPORT
+    AuditActionType : +IMPORT
+    AuditActionType : +CONFIG
+    AuditActionType : +SYSTEM
+    AuditActionType : +PLUGIN
+    AuditActionType : +CUSTOM
+    class AuditLog
+    AuditLog : -__tablename__
+    AuditLog : +id
+    AuditLog : +timestamp
+    AuditLog : +user_id
+    AuditLog : +user_name
+    AuditLog : +action_type
+    AuditLog : +resource_type
+    AuditLog : +resource_id
+    AuditLog : +description
+    AuditLog : +ip_address
+    AuditLog : +user_agent
+    AuditLog : +details
+    AuditLog : -__repr__()
+    class SystemSetting
+    SystemSetting : -__tablename__
+    SystemSetting : +id
+    SystemSetting : +key
+    SystemSetting : +value
+    SystemSetting : +description
+    SystemSetting : +is_secret
+    SystemSetting : +is_editable
+    SystemSetting : +validate_key()
+    SystemSetting : -__repr__()
     class ExamplePlugin
     ExamplePlugin : +name
     ExamplePlugin : +version
@@ -1016,6 +1076,8 @@ classDiagram
     BaseCloudService <|-- AzureBlobStorageService
     BaseCloudService <|-- GCPStorageService
     NexusManager <|-- CloudManager
+    Base <|-- User
+    TimestampMixin <|-- User
     NexusManager <|-- SecurityManager
     RemoteService <|-- HTTPService
     RemoteService <|-- AsyncHTTPService
@@ -1037,3 +1099,8 @@ classDiagram
     NexusError <|-- ThreadManagerError
     NexusError <|-- FileError
     NexusError <|-- APIError
+    Base <|-- Plugin
+    TimestampMixin <|-- Plugin
+    Base <|-- AuditLog
+    Base <|-- SystemSetting
+    TimestampMixin <|-- SystemSetting
